@@ -20,10 +20,12 @@ jobs:
           context: ./vote
           push: false
           tags: vote:${{ github.sha }}
+          load: true
 
       - name: Run Trivy Vulnerability Scanner
         uses: aquasecurity/trivy-action@master
         with:
+          scan-type: 'image'
           image-ref: 'vote:${{ github.sha }}'
           format: 'table'
           exit-code: '0'
