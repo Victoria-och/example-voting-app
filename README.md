@@ -63,3 +63,24 @@ The voting application only accepts one vote per client browser. It does not reg
 This isn't an example of a properly architected perfectly designed distributed app... it's just a simple
 example of the various types of pieces and languages you might see (queues, persistent data, etc), and how to
 deal with them in Docker at a basic level.
+## 📊 Monitoring & Observability (SLOs)
+
+An SLO-focused monitoring dashboard was constructed using **Prometheus** and **Grafana** deployed on the local Kubernetes cluster to track service health and performance.
+
+### Service Level Objectives (SLOs)
+1. **Availability SLO (Target: 99.5%)**
+   * **Metric:** Pod phase status for core voting application services (`vote`, `result`, `worker`, `redis`, `db`).
+   * **PromQL Query:**
+     ```promql
+     kube_pod_status_phase{phase="Running", pod=~"(vote|result|worker|redis|db).*"}
+     ```
+
+2. **Latency SLO (Target: < 500ms)**
+   * **Metric:** Processing/CPU execution rate across application containers.
+   * **PromQL Query:**
+     ```promql
+     rate(container_cpu_usage_seconds_total{pod=~"(vote|result|worker|redis|db).*"}[5m])
+     ```
+
+### Dashboard Artifacts
+* The exported Grafana dashboard JSON configuration is checked into version control under `voting-app-availability-slo.json`.
