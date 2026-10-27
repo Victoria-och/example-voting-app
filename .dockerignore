@@ -1,0 +1,8 @@
+.git
+.gitignore
+README.md
+architecture.excalidraw.png
+docker-compose.yml
+docker-compose.images.yml
+docker-stack.yml
+*.md
